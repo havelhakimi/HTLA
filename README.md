@@ -19,7 +19,7 @@ The `train.py` can be used to train all the models by setting different argument
 ### BERT for falt multi-label classification 
 `python train.py --name='ckp_bert' --batch 10 --data='wos' --graph 0` </br> </br>
 Some Important arguments: </br>
-- `--name` name of directory in which your model will be saved. For e.g. the above model will be saved in `./LHA-HTC/data/wos/ckp_bert`
+- `--name` name of directory in which your model will be saved. For e.g. the above model will be saved in `./HTLA/data/wos/ckp_bert`
 - `--data` name of directory which contains your data and related files
 - `--graph` whether to use graph encoder
 ###  FOR HTLA 
@@ -48,7 +48,7 @@ Some Important arguments: </br>
 To run the trained model on test set run the script `test_lha.py` </br> 
 `python test.py --name ckpt1 --data wos --extra _macro` </br> </br>
 Some Important arguments
-- `--name` The name of the directory which contains the saved checkpoint. The checkpoint is saved in `../LHA-HTC/data/wos/`
+- `--name` The name of the directory which contains the saved checkpoint. The checkpoint is saved in `../HTLA/data/wos/`
 - `--data` The name of directory which contains your data and related files
 - `--extra` Two checkpoints are kept based on macro-F1 and micro-F1 respectively. The possible choices are  `_macro` and `_micro` to choose from the two checkpoints
 
