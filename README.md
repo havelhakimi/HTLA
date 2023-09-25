@@ -6,7 +6,7 @@
 - transformers >= 4.2.1
 - fairseq == 0.10.0
 - torch-geometric == 1.7.2
-- torch-sparse == 0.6.12
+- torch-sparse == 0.6.17
 
 ## Data
 - The repository contains tokenized versions of the WOS dataset in `data/wos` folder. This is obtained following the same way as in [contrastive-htc](https://github.com/wzh9969/contrastive-htc#preprocess).
