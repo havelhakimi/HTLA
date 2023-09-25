@@ -42,6 +42,6 @@ To run the trained model on test set run the script `test.py` </br>
 `python test.py --name ckpt1 --data wos --extra _macro` </br> </br>
 Some Important arguments
 - `--name` The name of the directory which contains the saved checkpoint. The checkpoint is saved in `../HTLA/data/wos/` when working with WOS dataset
-- `--data` The name of daatset directory which contains your data and related files
+- `--data` The name of dataset directory which contains your data and related files
 - `--extra` Two checkpoints are kept based on macro-F1 and micro-F1 respectively. The possible choices are  `_macro` and `_micro` to choose from the two checkpoints
 
