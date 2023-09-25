@@ -26,7 +26,7 @@ Some Important arguments: </br>
 `python3 train.py --name='ckp_htla' --batch 10 --data='wos' --graph 1 --graph_type='GCN' --trpmg 1 --mg_list 0.1 0.2` </br>
 </br>
 Some Important arguments: </br>
-- `--graph_type` type of graph encoder. Possible choices are 'GCN,'GAT' and 'graphormer'. HTLA uses GCN 
+- `--graph_type` type of graph encoder. Possible choices are 'GCN,'GAT' and 'graphormer'. HTLA uses GCN as the graph encoder
 - `--trpmg` whether Hiearchical Triplet Loss required or not
 - `--mg_list` margin distance for each level (WOS has two levels we use 0.1 and 0.2 as margin distance)
 
