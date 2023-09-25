@@ -100,7 +100,7 @@ parser.add_argument('--mg_list', nargs='+', type=float, help='List of margins fo
 parser.add_argument('--mine', type=int, default=0, help='whether MINE required or not')
 parser.add_argument('--mine_pen', type=float, default=1.0, help='Penalty for MINE loss')
 parser.add_argument('--netw', default='n1', type=str, choices=['n1','n2','n3','n4','n5','n6'], help='Select n/w for Mine')
-parser.add_argument('--min_proj', type=int, default=300, help='How much to project')
+parser.add_argument('--min_proj', type=int, default=300, help='How much to project mine layers')
 
 
 
