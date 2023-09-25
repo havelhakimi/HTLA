@@ -16,7 +16,7 @@
 ## Train
 The `train.py` can be used to train all the models by setting different arguments.  
 
-### BERT for falt multi-label classification 
+### BERT (for flat multi-label classification) 
 `python train.py --name='ckp_bert' --batch 10 --data='wos' --graph 0` </br> </br>
 Some Important arguments: </br>
 - `--name` name of directory in which your model will be saved. For e.g. the above model will be saved in `./HTLA/data/wos/ckp_bert`
