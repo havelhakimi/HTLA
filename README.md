@@ -39,7 +39,7 @@ Last four argumnets of `train.py` which are `--mine`, `--mine_pen`, `--netw` and
 
 ## Test
 To run the trained model on test set run the script `test.py` </br> 
-`python test.py --name ckpt1 --data wos --extra _macro` </br> </br>
+`python test.py --name ckp_htla --data wos --extra _macro` </br> </br>
 Some Important arguments
 - `--name` The name of the directory which contains the saved checkpoint. The checkpoint is saved in `../HTLA/data/wos/` when working with WOS dataset
 - `--data` The name of dataset directory which contains your data and related files
