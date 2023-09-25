@@ -31,7 +31,7 @@ Some Important arguments: </br>
 - `--mg_list` margin distance for each level (WOS has two levels we use 0.1 and 0.2 as margin distance)
 
 ### For multiple  random runs
-In `train.py` set the `--seed` argument to `None` for multiple random runs
+In `train.py` set the `--seed=None` for multiple random runs
 ### Some irrelevant arguments in train.py:
 Last four argumnets of `train.py` which are `--mine`, `--mine_pen`, `--netw` and `--min_proj`, have no role in HTLA. They part of another component which are not relevant to this work and can be ignored. 
 
