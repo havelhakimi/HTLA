@@ -29,7 +29,8 @@ Some Important arguments: </br>
 - `--graph_type` type of graph encoder. Possible choices are 'GCN,'GAT' and 'graphormer'. HTLA uses GCN 
 - `--trpmg` whether Hiearchical Triplet Loss required or not
 - `--mg_list` margin distance for each level (WOS has two levels we use 0.1 and 0.2 as margin distance)
-
+### For multiple  random runs
+`--seed` set seed to `None` in `train.py` for multiple random runs
 ### Some irrelevant arguments in train.py:
 Last four argumnets of train.py `--mine`, `--mine_pen`, `--netw` and `--min_proj` have no role in HTLA. They part of another component which are not relevant to this work and can be ignored. 
 
