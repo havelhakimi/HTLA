@@ -16,19 +16,23 @@
 ## Train
 The `train.py` can be used to train all the models by setting different arguments.  
 
-### For BERT 
+### BERT for falt multi-label classification 
 `python train.py --name='ckp_bert' --batch 10 --data='wos' --graph 0` </br> </br>
 Some Important arguments: </br>
-- `--name` The name of directory in which your model will be saved. For e.g. the above model will be saved in `./LHA-HTC/data/wos/ckp_bert`
-- `--data` The name of directory which contains your data and related files
-- `--graph` whether to use structure encoder
-###  FOR HGCLR 
-`python3 train_lha.py --name='ckp_hgclr' --batch 10 --data='wos' --graph 1 --lamb 0.05 --thre 0.02` </br>
+- `--name` name of directory in which your model will be saved. For e.g. the above model will be saved in `./LHA-HTC/data/wos/ckp_bert`
+- `--data` name of directory which contains your data and related files
+- `--graph` whether to use graph encoder
+###  FOR HTLA 
+`python3 train.py --name='ckp_htla' --batch 10 --data='wos' --graph 1 --graph_type='GCN' --trpmg 1 --mg_list 0.1 0.2` </br>
 </br>
 Some Important arguments: </br>
-- `--lamb` and `--thre` are arguments specific to HGCLR, and their specific values for WOS dataset are given in [contrastive-htc](https://github.com/wzh9969/contrastive-htc#reproducibility)
+- `--graph_type` type of graph encoder. Possible choices are 'GCN,'GAT' and 'graphormer'
+- `--trpmg` whether Hiearchical Triplet Loss required or not
+- `--mg_list` margin distance for each level (WOS has two levels we use 0.1 and 0.2 as margin distance)
+
+
 ### FOR LHA-CON
-`python3 train_lha.py --name='ckpt_con' --batch 10 --data='wos' --graph 1 --lamb 0.05 --thre 0.02 --hsampling 1 --hcont_wt 0.4` </br>
+`python3 train_lha.py --name='ckpt_con' --batch 10 --data='wos' --graph 1  --lamb 0.05 --thre 0.02 --hsampling 1 --hcont_wt 0.4` </br>
 </br>
 Some Important arguments: </br>
 - `--hsampling` whether to use LHA-CON module
@@ -42,7 +46,7 @@ Some Important arguments: </br>
 
 ## Test
 To run the trained model on test set run the script `test_lha.py` </br> 
-`python test_lha.py --name ckpt1 --data wos --extra _macro` </br> </br>
+`python test.py --name ckpt1 --data wos --extra _macro` </br> </br>
 Some Important arguments
 - `--name` The name of the directory which contains the saved checkpoint. The checkpoint is saved in `../LHA-HTC/data/wos/`
 - `--data` The name of directory which contains your data and related files
