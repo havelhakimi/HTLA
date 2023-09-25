@@ -30,7 +30,7 @@ Some Important arguments: </br>
 - `--trpmg` whether Hiearchical Triplet Loss required or not
 - `--mg_list` margin distance for each level (WOS has two levels we use 0.1 and 0.2 as margin distance)
 
-### Irrelevant Arguments:
+### Some irrelevant arguments in train.py:
 Last four argumnets of train.py `--mine`, `--mine_pen`, `--netw` and `--min_proj` are part of another component which are not relevant to this work. They can be ignored. 
 
 
