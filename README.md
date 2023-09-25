@@ -27,7 +27,7 @@ Some Important arguments: </br>
 </br>
 Some Important arguments: </br>
 - `--graph_type` type of graph encoder. Possible choices are 'GCN,'GAT' and 'graphormer'. HTLA uses GCN as the graph encoder
-- `--trpmg` whether Hiearchical Triplet Loss required or not
+- `--trpmg` whether Hierarchical Triplet Loss required or not
 - `--mg_list` margin distance for each level (WOS has two levels we use 0.1 and 0.2 as margin distance)
 
 ### For multiple  random runs
