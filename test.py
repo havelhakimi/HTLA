@@ -19,7 +19,7 @@ args = parser.parse_args()
 if __name__ == '__main__':
     
     #data_path_root='/scratch/ashish_k.iitr/HPT/RRM_modelWOS/pyscript/'
-    data_path_root=os.path.join('../LHA-HTC/data', args.data)
+    data_path_root=os.path.join('../HTLA/data', args.data)
     data_path=data_path_root+'Checkpoints/'
     checkpoint = torch.load(os.path.join(data_path, args.name, 'checkpoint_best{}.pt'.format(args.extra)),
                             map_location='cpu')       
