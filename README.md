@@ -33,7 +33,7 @@ Some Important arguments: </br>
 ### For multiple  random runs
 In `train.py` set the `--seed=None` for multiple random runs
 ### Some irrelevant arguments in train.py:
-Last four argumnets of `train.py` which are `--mine`, `--mine_pen`, `--netw` and `--min_proj`, have no role in HTLA. They part of another component which are not relevant to this work and can be ignored. 
+Last four argumnets of `train.py` which are `--mine`, `--mine_pen`, `--netw` and `--min_proj`, have no role in HTLA. They are part of another component that is not relevant to this work and can be ignored. 
 
 
 
