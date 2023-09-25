@@ -77,7 +77,7 @@ class Saver:
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=3e-5, help='Learning rate.')
+parser.add_argument('--lr', type=float, default=1e-5, help='Learning rate.')
 parser.add_argument('--data', type=str, default='wos', choices=['wos', 'nyt', 'rcv'], help='Dataset.')
 parser.add_argument('--batch', type=int, default=12, help='Batch size.')
 parser.add_argument('--early-stop', type=int, default=6, help='Epoch before early stop.')
