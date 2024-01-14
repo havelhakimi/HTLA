@@ -1,11 +1,10 @@
-
 from transformers import AutoConfig,AutoModel
 import torch
-from graph import GraphEncoder
+from gpa import GraphEncoder
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from criterion import TripletLoss, Mine, Tripletlosshard1, Tripletlosshard2
+from criterion import TripletLoss, Mine
 
 
 
@@ -13,7 +12,7 @@ from criterion import TripletLoss, Mine, Tripletlosshard1, Tripletlosshard2
 
 class PLM_Graph(nn.Module):
     def __init__(self,config,num_labels,mod_type,graph,graph_type,layer,data_path,bce_wt,dot,tripmg=0,trip_penalty=0,mglist=None,
-                 mine=0,mine_pen=0,netw='n1',min_proj=300,label_refiner=1):
+                 mine=0,mine_pen=0,netw='n1',min_proj=300,label_refiner=1,edge_dim=1):
         super(PLM_Graph, self).__init__()
 
         self.bert = AutoModel.from_pretrained(mod_type)
@@ -30,11 +29,10 @@ class PLM_Graph(nn.Module):
         self.tripmg=tripmg
         if self.tripmg:
           self.trp_pen=trip_penalty
-          #self.trploss=TripletLoss(mglist,data_path=data_path)
-          self.trploss=Tripletlosshard1(mglist,data_path=data_path)
+          self.trploss=TripletLoss(mglist,data_path=data_path)
 
         if self.graph:
-          self.gc1 = GraphEncoder(config, graph_type=graph_type, layer=layer, data_path=data_path,tokenizer=mod_type,label_refiner=label_refiner)
+          self.gc1 = GraphEncoder(config, graph_type=graph_type, edge_dim=edge_dim,layer=layer, data_path=data_path,tokenizer=mod_type,label_refiner=label_refiner)
         self.classifier = nn.Linear(config.hidden_size, num_labels)
 
 
