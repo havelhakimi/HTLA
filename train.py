@@ -88,8 +88,9 @@ parser.add_argument('--warmup', default=0, type=int, help='Warmup steps.')
 parser.add_argument('--graph', default=0, type=int, help='Whether use graph encoder.')
 parser.add_argument('--layer', default=1, type=int, help='Layer of Graphormer.')
 parser.add_argument('--mod_type', default='bert-base-uncased', type=str, choices=['bert-base-uncased','roberta-large'], help='Select backbone')
-parser.add_argument('--graph_type', type=str, default='GCN', help='graph type')
-parser.add_argument('--label_refiner', default=1, type=int, help='Label Refiner for Graphormer.')
+parser.add_argument('--graph_type', type=str, default='GPA', help='graph type')
+parser.add_argument('--label_refiner', default=1, type=int, help='Label Enhancer for GPA.')
+parser.add_argument('--edge_dim', default=1, type=int, help='Label Refiner.')
 parser.add_argument('--bce_wt', type=float, default=1, help='bce_wt.')
 parser.add_argument('--dot', default=0, type=int, help='Dot prod.')
 parser.add_argument('--seed', default=3, type=int, help='Random seed.')
@@ -133,8 +134,9 @@ if __name__ == '__main__':
                                           graph=args.graph,mod_type=args.mod_type,graph_type=args.graph_type,
                                           bce_wt=args.bce_wt,dot=args.dot,
                                           layer=args.layer, data_path=args.data,
-                                          tripmg=args.trpmg,trip_penalty=args.trp_pen,mglist=args.mg_list,
+                                          tripmg=args.trpmg,trip_penalty=args.trp_pen,mglist=args.mg_list,edge_dim=args.edge_dim,
                                           mine=args.mine,mine_pen=args.mine_pen,netw=args.netw,min_proj=args.min_proj,label_refiner=args.label_refiner,
+                      
                                           )
 
     
