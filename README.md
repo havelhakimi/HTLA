@@ -26,10 +26,10 @@ Some Important arguments: </br>
 </br>
 Some Important arguments: </br>
 - `--graph_type` type of graph encoder. Possible choices are 'GCN,'GAT', 'graphormer', 'GPA'. HTLA uses GPA as the graph encoder
-- `--edge_dim` edge feature size for GPA (We use 30 as edge fature size for each dataset )
+- `--edge_dim` edge feature size for GPA (We use 30 as edge feature size for each dataset )
 - `--trpmg` whether Hierarchical Triplet Loss required or not
 - `--mg_list` margin distance for each level (We use 0.1 as margin distance for each level of WOS)
-- The node feature is fixed as 768 to match the text feture size and is not included as argument  
+- The node feature is fixed as 768 to match the text feature size and is not included as run time argument  
 ### For multiple  random runs
 In `train.py` set the `--seed=None` for multiple random runs
 ### Some irrelevant arguments in train.py:
