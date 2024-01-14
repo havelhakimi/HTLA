@@ -52,7 +52,7 @@ if __name__ == '__main__':
                                           graph=args.graph,mod_type=args.mod_type,graph_type=args.graph_type,
                                           bce_wt=args.bce_wt,dot=args.dot,
                                           layer=args.layer, data_path=args.data,
-                                          tripmg=args.trpmg,trip_penalty=args.trp_pen,mglist=args.mg_list,
+                                          tripmg=args.trpmg,trip_penalty=args.trp_pen,mglist=args.mg_list,edge_dim=args.edge_dim,
                                           mine=args.mine,mine_pen=args.mine_pen,netw=args.netw,min_proj=args.min_proj,label_refiner=args.label_refiner,
                                           )
 
