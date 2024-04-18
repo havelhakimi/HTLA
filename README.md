@@ -22,18 +22,16 @@ Some Important arguments: </br>
 - `--data` name of dataset directory which contains your data and related files
 - `--graph` whether to use graph encoder
 ###  For HTLA (does Hierarchical Text Classification)
-`python train.py --name='ckp_htla' --batch 10 --data='wos' --graph 1 --graph_type='GPA' --edge_dim 30 --trpmg 1 --mg_list 0.1 0.1` </br>
+`python train.py --name='ckp_htla' --batch 10 --data='wos' --graph 1 --graph_type='graphormer' --edge_dim 30 --trpmg 1 --mg_list 0.1 0.1` </br>
 </br>
 Some Important arguments: </br>
-- `--graph_type` type of graph encoder. Possible choices are 'GCN,'GAT', 'graphormer', 'GPA'. HTLA uses GPA as the graph encoder
-- `--edge_dim` edge feature size for GPA (We use 30 as edge feature size for each dataset )
-- `--trpmg` whether Hierarchical Triplet Loss required or not
-- `--mg_list` margin distance for each level (We use 0.1 as margin distance for each level of WOS)
+- `--graph_type` type of graph encoder. Possible choices are 'graphormer', 'GCN', and 'GAT'. HTLA uses graphormer as the graph encoder
+- `--msl` whether Margin Separation Loss required or not
+- - `--msl_pen` weight for the MSL loss (we set it to 1 for all datasets)
+- `--mg_list` margin distance for each level (We use 0.1 as margin distance for each level in all datasets)
 - The node feature is fixed as 768 to match the text feature size and is not included as run time argument  
 ### For multiple  random runs
 In `train.py` set the `--seed=None` for multiple random runs
-### Some irrelevant arguments in train.py:
-Last four argumnets of `train.py` which are `--mine`, `--mine_pen`, `--netw` and `--min_proj`, have no role in HTLA. They are part of another component that is not relevant to this work and can be ignored. 
 
 
 
