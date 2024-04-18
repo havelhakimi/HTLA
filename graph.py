@@ -149,7 +149,7 @@ class GraphAttention(nn.Module):
         return attn_output, attn_weights_reshaped, past_key_value
 
 class GraphLayer(nn.Module):
-    def __init__(self, config, graph_type):
+    def __init__(self, config, graph_type,label_refiner):
         super(GraphLayer, self).__init__()
         self.config = config
 
@@ -170,6 +170,7 @@ class GraphLayer(nn.Module):
         self.fc1 = nn.Linear(config.hidden_size, config.intermediate_size)
         self.fc2 = nn.Linear(config.intermediate_size, config.hidden_size)
         self.final_layer_norm = nn.LayerNorm(config.hidden_size)
+        self.label_refiner=label_refiner
 
     def forward(self, label_emb, extra_attn):
         residual = label_emb
@@ -179,17 +180,18 @@ class GraphLayer(nn.Module):
                 extra_attn=extra_attn,
             )
             label_emb = nn.functional.dropout(label_emb, p=self.dropout, training=self.training)
-            """
+            
             label_emb = residual + label_emb
             label_emb = self.layer_norm(label_emb)
+            if self.label_refiner:
 
-            residual = label_emb
-            label_emb = self.activation_fn(self.fc1(label_emb))
-            label_emb = nn.functional.dropout(label_emb, p=self.activation_dropout, training=self.training)
-            label_emb = self.fc2(label_emb)
-            label_emb = nn.functional.dropout(label_emb, p=self.dropout, training=self.training)
-            label_emb = residual + label_emb
-            label_emb = self.final_layer_norm(label_emb)"""
+                residual = label_emb
+                label_emb = self.activation_fn(self.fc1(label_emb))
+                label_emb = nn.functional.dropout(label_emb, p=self.activation_dropout, training=self.training)
+                label_emb = self.fc2(label_emb)
+                label_emb = nn.functional.dropout(label_emb, p=self.dropout, training=self.training)
+                label_emb = residual + label_emb
+                label_emb = self.final_layer_norm(label_emb)
         elif self.graph_type == 'GCN' or self.graph_type == 'GAT':
             label_emb = self.graph(label_emb.squeeze(0), edge_index=extra_attn)
             label_emb = nn.functional.dropout(label_emb, p=self.dropout, training=self.training)
@@ -200,7 +202,7 @@ class GraphLayer(nn.Module):
         return label_emb
 
 class GraphEncoder(nn.Module):
-    def __init__(self, config, graph_type='GAT', layer=1, data_path=None, tokenizer='bert-base-uncased'):
+    def __init__(self, config, graph_type='GAT', layer=1, data_path=None, tokenizer='bert-base-uncased',label_refiner=1):
         super(GraphEncoder, self).__init__()
         self.config = config
         self.label_dict = torch.load(os.path.join(data_path, 'bert_value_dict.pt'))
@@ -212,7 +214,7 @@ class GraphEncoder(nn.Module):
             self.label_name.append(self.label_dict[i])
         self.label_name = self.tokenizer(self.label_name, padding='longest')['input_ids']
         self.label_name = nn.Parameter(torch.tensor(self.label_name, dtype=torch.long), requires_grad=False)
-        self.hir_layers = nn.ModuleList([GraphLayer(config,graph_type=graph_type) for i in range(layer)])
+        self.hir_layers = nn.ModuleList([GraphLayer(config,graph_type=graph_type,label_refiner=label_refiner) for i in range(layer)])
 
         self.label_num = len(self.label_name)
 
