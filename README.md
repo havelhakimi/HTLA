@@ -1,4 +1,4 @@
-# HTLA
+# HTLA: Hierarchical Text-Label Association 
 
 ## Requirements
 - Python >= 3.6
