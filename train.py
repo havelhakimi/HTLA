@@ -88,19 +88,15 @@ parser.add_argument('--warmup', default=0, type=int, help='Warmup steps.')
 parser.add_argument('--graph', default=0, type=int, help='Whether use graph encoder.')
 parser.add_argument('--layer', default=1, type=int, help='Layer of Graphormer.')
 parser.add_argument('--mod_type', default='bert-base-uncased', type=str, choices=['bert-base-uncased','roberta-large'], help='Select backbone')
-parser.add_argument('--graph_type', type=str, default='GPA', help='graph type')
+parser.add_argument('--graph_type', type=str, default='graphormer', help='graph type')
 parser.add_argument('--label_refiner', default=1, type=int, help='Label Enhancer for GPA.')
-parser.add_argument('--edge_dim', default=1, type=int, help='Edge feature size for GPA.')
 parser.add_argument('--bce_wt', type=float, default=1, help='bce_wt.')
 parser.add_argument('--dot', default=0, type=int, help='Dot prod.')
 parser.add_argument('--seed', default=3, type=int, help='Random seed.')
-parser.add_argument('--trpmg', type=int, default=0, help='whether Hiearchical Triplet Loss required or not')
-parser.add_argument('--trp_pen', type=float, default=1.0, help='Penalty for Trip loss')
+parser.add_argument('--msl', type=int, default=0, help='whether Margin Separation Loss (MSL) required or not')
+parser.add_argument('--msl_pen', type=float, default=1.0, help='Penalty for MSL')
 parser.add_argument('--mg_list', nargs='+', type=float, help='List of margins for each level')
-parser.add_argument('--mine', type=int, default=0, help='whether MINE required or not')
-parser.add_argument('--mine_pen', type=float, default=1.0, help='Penalty for MINE loss')
-parser.add_argument('--netw', default='n1', type=str, choices=['n1','n2','n3','n4','n5','n6'], help='Select n/w for Mine')
-parser.add_argument('--min_proj', type=int, default=300, help='How much to project mine layers')
+
 
 
 
@@ -134,10 +130,9 @@ if __name__ == '__main__':
                                           graph=args.graph,mod_type=args.mod_type,graph_type=args.graph_type,
                                           bce_wt=args.bce_wt,dot=args.dot,
                                           layer=args.layer, data_path=args.data,
-                                          tripmg=args.trpmg,trip_penalty=args.trp_pen,mglist=args.mg_list,edge_dim=args.edge_dim,
-                                          mine=args.mine,mine_pen=args.mine_pen,netw=args.netw,min_proj=args.min_proj,label_refiner=args.label_refiner,
-                      
-                                          )
+                                          msl=args.msl,msl_penalty=args.msl_pen,mglist=args.mg_list,
+                                          ,label_refiner=args.label_refiner,)
+                                          
 
     
     #if args.wandb:
