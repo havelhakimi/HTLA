@@ -69,7 +69,7 @@ class PLM_Graph(nn.Module):
 
           if self.msl:
             #print(loss)
-            print('Inside Trip')
+            #print('Inside Trip')
             loss+=(self.msloss(bert_output,label_embed,target)*self.msl_pen)
             
             #print(f'loss inside MSL {loss}')
