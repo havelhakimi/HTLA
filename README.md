@@ -11,7 +11,7 @@
 ## Data
 - The repository contains tokenized versions of the WOS dataset processed using the BERT tokenizer, along with its related files in the `data/wos` folder. This is obtained following the same way as in [contrastive-htc](https://github.com/wzh9969/contrastive-htc#preprocess).
 - All datasets are publicly available and accessible via the following links: [WOS](https://github.com/kk7nc/HDLTex), [RCV1-V2](https://trec.nist.gov/data/reuters/reuters.html) and [NYT](https://catalog.ldc.upenn.edu/LDC2008T19). 
-- We have followed the specific details mentioned in the  [contrastive-htc](https://github.com/wzh9969/contrastive-htc#preprocess) repository (which contains HGCLR model ) to obtain and preprocess the original datasets (WOS, RCV1-V2, and NYT). The corresponding scripts for preprocessing will be added here later on.
+- We have followed the specific details outlined in the [contrastive-htc](https://github.com/wzh9969/contrastive-htc#preprocess) repository (which contains HGCLR model ) to obtain and preprocess the original datasets (WOS, RCV1-V2, and NYT). The corresponding scripts for preprocessing will be added here later on.
 
 ## Train
 The `train.py` can be used to train all the models by setting different arguments.  
