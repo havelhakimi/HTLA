@@ -21,15 +21,18 @@ Some Important arguments: </br>
 - `--name` name of directory in which your model will be saved. For e.g. the above model will be saved in `./HTLA/data/wos/ckp_bert`
 - `--data` name of dataset directory which contains your data and related files
 - `--graph` whether to use graph encoder
-###  For HTLA (does Hierarchical Text Classification)
-`python train.py --name='ckp_htla' --batch 10 --data='wos' --graph 1 --graph_type='graphormer' --edge_dim 30 --trpmg 1 --mg_list 0.1 0.1` </br>
+###  For HTLA (does Hierarchical Text Classification with Margin Separation Loss (MSL))
+`python train.py --name='ckp_htla' --batch 10 --data='wos' --graph 1 --graph_type='graphormer'  --msl 1 --msl_pen 1 --mg_list 0.1 0.1` </br>
 </br>
 Some Important arguments: </br>
 - `--graph_type` type of graph encoder. Possible choices are 'graphormer', 'GCN', and 'GAT'. HTLA uses graphormer as the graph encoder
 - `--msl` whether Margin Separation Loss required or not
 - - `--msl_pen` weight for the MSL loss (we set it to 1 for all datasets)
 - `--mg_list` margin distance for each level (We use 0.1 as margin distance for each level in all datasets)
-- The node feature is fixed as 768 to match the text feature size and is not included as run time argument  
+- The node feature is fixed as 768 to match the text feature size and is not included as run time argument
+
+###  For BERT-Graphormer (does Hierarchical Text Classification without MSL)
+`python train.py --name='ckp_htla' --batch 10 --data='wos' --graph 1 --graph_type='graphormer' --msl 0  </br>
 ### For multiple  random runs
 In `train.py` set the `--seed=None` for multiple random runs
 
