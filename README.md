@@ -33,7 +33,7 @@ Some Important arguments: </br>
 - The node feature is fixed as 768 to match the text feature size and is not included as run time argument
 
 ###  For BERT-Graphormer (does Hierarchical Text Classification without MSL)
-`python train.py --name='ckp_bgrapho' --batch 10 --data='wos' --graph 1 --graph_type='graphormer' --msl 0  </br>
+`python train.py --name='ckp_bgrapho' --batch 10 --data='wos' --graph 1 --graph_type='graphormer' --msl 0`  </br>
 ### For multiple  random runs
 In `train.py` set the `--seed=None` for multiple random runs
 
