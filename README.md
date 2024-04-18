@@ -27,7 +27,7 @@ Some Important arguments: </br>
 Some Important arguments: </br>
 - `--graph_type` type of graph encoder. Possible choices are 'graphormer', 'GCN', and 'GAT'. HTLA uses graphormer as the graph encoder
 - `--msl` whether Margin Separation Loss required or not
-- - `--msl_pen` weight for the MSL loss (we set it to 1 for all datasets)
+- `--msl_pen` weight for the MSL component (we set it to 1 for all datasets)
 - `--mg_list` margin distance for each level (We use 0.1 as margin distance for each level in all datasets)
 - The node feature is fixed as 768 to match the text feature size and is not included as run time argument
 
