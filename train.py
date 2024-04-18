@@ -94,8 +94,8 @@ parser.add_argument('--bce_wt', type=float, default=1, help='bce_wt.')
 parser.add_argument('--dot', default=0, type=int, help='Dot prod.')
 parser.add_argument('--seed', default=3, type=int, help='Random seed.')
 parser.add_argument('--msl', type=int, default=0, help='whether Margin Separation Loss (MSL) required or not')
-parser.add_argument('--msl_pen', type=float, default=1.0, help='Penalty for MSL')
-parser.add_argument('--mg_list', nargs='+', type=float, help='List of margins for each level')
+parser.add_argument('--msl_pen', type=float, default=1.0, help='weight for the MSL component')
+parser.add_argument('--mg_list', nargs='+', type=float, help='List of margin distance for each level')
 
 
 
