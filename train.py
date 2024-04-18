@@ -131,7 +131,7 @@ if __name__ == '__main__':
                                           bce_wt=args.bce_wt,dot=args.dot,
                                           layer=args.layer, data_path=args.data,
                                           msl=args.msl,msl_penalty=args.msl_pen,mglist=args.mg_list,
-                                          ,label_refiner=args.label_refiner,)
+                                          label_refiner=args.label_refiner,)
                                           
 
     
