@@ -65,12 +65,14 @@ class PLM_Graph(nn.Module):
             loss_fct = torch.nn.BCEWithLogitsLoss()
             target = labels.to(torch.float32)
             loss += loss_fct(logits.view(-1, self.num_labels), target)*(self.bce_wt)
+            #print(f'loss inside Bce {loss}')
 
           if self.msl:
             #print(loss)
-            #print('Inside Trip')
-            loss+=(self.msloss(bert_output,label_embed,target)*self.trp_pen)
-            #print(loss)
+            print('Inside Trip')
+            loss+=(self.msloss(bert_output,label_embed,target)*self.msl_pen)
+            
+            #print(f'loss inside MSL {loss}')
 
     
         return {
