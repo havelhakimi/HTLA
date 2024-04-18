@@ -1,10 +1,12 @@
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoTokenizer
 from transformers.activations import ACT2FN
 import os
+
+from torch_geometric.nn import GCNConv, GATConv
+
 
 class GraphAttention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
@@ -146,78 +148,19 @@ class GraphAttention(nn.Module):
 
         return attn_output, attn_weights_reshaped, past_key_value
 
-#from torch_geometric.nn import GCNConv, GATConv
-class GraphPropagationAttention(nn.Module):
-    def __init__(self, node_dim, edge_dim, num_heads=12, qkv_bias=False, attn_drop=0., proj_drop=0.):
-        super().__init__()
-        self.num_heads = num_heads
-        head_dim = node_dim // num_heads
-        self.scale = head_dim ** -0.5
-        
-        self.qkv = nn.Linear(node_dim, node_dim * 3, bias=qkv_bias)
-        self.attn_drop = nn.Dropout(attn_drop)
-        self.proj = nn.Linear(node_dim, node_dim)
-        
-        self.reduce = nn.Conv2d(edge_dim, num_heads, kernel_size=1)
-        self.expand = nn.Conv2d(num_heads, edge_dim, kernel_size=1)
-        if edge_dim != node_dim:
-            self.fc = nn.Linear(edge_dim, node_dim)
-        else:
-            self.fc = nn.Identity()
-        self.proj_drop = nn.Dropout(proj_drop)
-    
-    def forward(self, node_embeds, edge_embeds):
-        # node-to-node propagation
-        #padding_mask = torch.ones(1, node_embeds.size(1), device=node_embeds.device)
-        #padding_mask = (padding_mask > 0).type(torch.bool)
-        B, N, C = node_embeds.shape
-        qkv = self.qkv(node_embeds).reshape(B, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
-
-
-        q, k, v = qkv.unbind(0)
-        attn = (q @ k.transpose(-2, -1)) * self.scale # [B, n_head, 1+N, 1+N]
-        #print(edge_embeds.shape)
-        attn_bias = self.reduce(edge_embeds) # [B, C, 1+N, 1+N] -> [B, n_head, 1+N, 1+N]
-        attn = attn + attn_bias # [B, n_head, 1+N, 1+N]
-        residual = attn
-
-        #attn = attn.masked_fill(padding_mask, float("-inf"))
-        attn = attn.softmax(dim=-1) # [B, C, N, N]
-        attn = self.attn_drop(attn)
-        node_embeds = (attn @ v).transpose(1, 2).reshape(B, N, C)
-
-        # node-to-edge propagation
-        edge_embeds = self.expand(attn + residual)  # [B, n_head, 1+N, 1+N] -> [B, C, 1+N, 1+N]
-
-        # edge-to-node propagation
-        #w = edge_embeds.masked_fill(padding_mask, float("-inf"))
-        w=edge_embeds
-        w = w.softmax(dim=-1)
-        w = (w * edge_embeds).sum(-1).transpose(-1, -2)
-        node_embeds = node_embeds + self.fc(w)
-        node_embeds = self.proj(node_embeds)
-        node_embeds = self.proj_drop(node_embeds)
-
-        return node_embeds, edge_embeds
-
 class GraphLayer(nn.Module):
-    def __init__(self, config, graph_type,edge_dim,label_refiner=0,):
+    def __init__(self, config, graph_type):
         super(GraphLayer, self).__init__()
         self.config = config
 
         self.graph_type = graph_type
-        self.label_refiner=label_refiner
         if self.graph_type == 'graphormer':
             self.graph = GraphAttention(config.hidden_size, config.num_attention_heads,
                                         config.attention_probs_dropout_prob)
         elif self.graph_type == 'GCN':
-            pass
             self.graph = GCNConv(config.hidden_size, config.hidden_size)
         elif self.graph_type == 'GAT':
-            pass
             self.graph = GATConv(config.hidden_size, config.hidden_size, 1)
-        elif self.graph_type=='GPA':
-            self.graph=GraphPropagationAttention(node_dim=config.hidden_size, edge_dim=edge_dim, num_heads=config.num_attention_heads, qkv_bias=False, attn_drop= config.attention_probs_dropout_prob, proj_drop= config.attention_probs_dropout_prob)
 
         self.layer_norm = nn.LayerNorm(config.hidden_size)
 
@@ -227,8 +170,7 @@ class GraphLayer(nn.Module):
         self.fc1 = nn.Linear(config.hidden_size, config.intermediate_size)
         self.fc2 = nn.Linear(config.intermediate_size, config.hidden_size)
         self.final_layer_norm = nn.LayerNorm(config.hidden_size)
-    
-    
+
     def forward(self, label_emb, extra_attn):
         residual = label_emb
         if self.graph_type == 'graphormer':
@@ -237,47 +179,32 @@ class GraphLayer(nn.Module):
                 extra_attn=extra_attn,
             )
             label_emb = nn.functional.dropout(label_emb, p=self.dropout, training=self.training)
+            """
             label_emb = residual + label_emb
             label_emb = self.layer_norm(label_emb)
-            if self.label_refiner:
-            
-                residual = label_emb
-                label_emb = self.activation_fn(self.fc1(label_emb))
-                label_emb = nn.functional.dropout(label_emb, p=self.activation_dropout, training=self.training)
-                label_emb = self.fc2(label_emb)
-                label_emb = nn.functional.dropout(label_emb, p=self.dropout, training=self.training)
-                label_emb = residual + label_emb
-                label_emb = self.final_layer_norm(label_emb)
+
+            residual = label_emb
+            label_emb = self.activation_fn(self.fc1(label_emb))
+            label_emb = nn.functional.dropout(label_emb, p=self.activation_dropout, training=self.training)
+            label_emb = self.fc2(label_emb)
+            label_emb = nn.functional.dropout(label_emb, p=self.dropout, training=self.training)
+            label_emb = residual + label_emb
+            label_emb = self.final_layer_norm(label_emb)"""
         elif self.graph_type == 'GCN' or self.graph_type == 'GAT':
             label_emb = self.graph(label_emb.squeeze(0), edge_index=extra_attn)
             label_emb = nn.functional.dropout(label_emb, p=self.dropout, training=self.training)
             label_emb = residual + label_emb
             label_emb = self.layer_norm(label_emb)
-        elif self.graph_type=='GPA':
-            label_emb,_=self.graph(label_emb,extra_attn,)
-            if self.label_refiner:
-            
-                residual = label_emb
-                label_emb = self.activation_fn(self.fc1(label_emb))
-                label_emb = nn.functional.dropout(label_emb, p=self.activation_dropout, training=self.training)
-                label_emb = self.fc2(label_emb)
-                label_emb = nn.functional.dropout(label_emb, p=self.dropout, training=self.training)
-                label_emb = residual + label_emb
-                label_emb = self.final_layer_norm(label_emb)
-            
         else:
             raise NotImplementedError
         return label_emb
 
-
-
-
 class GraphEncoder(nn.Module):
-    def __init__(self, config, graph_type='GAT', edge_dim=40,layer=1, data_path=None, tokenizer='bert-base-uncased',label_refiner=0):
+    def __init__(self, config, graph_type='GAT', layer=1, data_path=None, tokenizer='bert-base-uncased'):
         super(GraphEncoder, self).__init__()
         self.config = config
         self.label_dict = torch.load(os.path.join(data_path, 'bert_value_dict.pt'))
-        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer)
+        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased") # /scratch/ashish_k.iitr/HPT/bert
 
         self.label_dict = {i: self.tokenizer.decode(v) for i, v in self.label_dict.items()}
         self.label_name = []
@@ -285,7 +212,7 @@ class GraphEncoder(nn.Module):
             self.label_name.append(self.label_dict[i])
         self.label_name = self.tokenizer(self.label_name, padding='longest')['input_ids']
         self.label_name = nn.Parameter(torch.tensor(self.label_name, dtype=torch.long), requires_grad=False)
-        self.hir_layers = nn.ModuleList([GraphLayer(config,graph_type=graph_type,edge_dim=edge_dim,label_refiner=label_refiner) for i in range(layer)])
+        self.hir_layers = nn.ModuleList([GraphLayer(config,graph_type=graph_type) for i in range(layer)])
 
         self.label_num = len(self.label_name)
 
@@ -301,7 +228,7 @@ class GraphEncoder(nn.Module):
                 path_dict[v] = s
                 if num_class < v:
                     num_class = v
-        if self.graph_type == 'graphormer' or self.graph_type == 'GPA' :
+        if self.graph_type == 'graphormer':
             num_class += 1
             for i in range(num_class):
                 if i not in path_dict:
@@ -355,13 +282,8 @@ class GraphEncoder(nn.Module):
 
             self.id_embedding = nn.Embedding(len(self.inverse_label_list) + 1, config.hidden_size,
                                               len(self.inverse_label_list))
-            if self.graph_type=='GPA':
-            
-                self.distance_embedding = nn.Embedding(20, edge_dim, 0)
-                self.edge_embedding = nn.Embedding(len(self.inverse_label_list) + 1, edge_dim, 0)
-            else:
-                self.distance_embedding = nn.Embedding(20, 1, 0)
-                self.edge_embedding = nn.Embedding(len(self.inverse_label_list) + 1, 1, 0)
+            self.distance_embedding = nn.Embedding(20, 1, 0)
+            self.edge_embedding = nn.Embedding(len(self.inverse_label_list) + 1, 1, 0)
             self.label_id = nn.Parameter(self.label_id, requires_grad=False)
             self.edge_mat = nn.Parameter(self.edge_mat, requires_grad=False)
             self.distance_mat = nn.Parameter(self.distance_mat, requires_grad=False)
@@ -383,7 +305,7 @@ class GraphEncoder(nn.Module):
         extra_attn = None
 
         self_attn_mask = (label_attn_mask * 1.).t().mm(label_attn_mask * 1.).unsqueeze(0).unsqueeze(0)
-        #print(self_attn_mask)
+       
         expand_size = label_emb.size(-2) // self.label_name.size(0)
         if self.graph_type=='graphormer':
             
@@ -395,17 +317,6 @@ class GraphEncoder(nn.Module):
             extra_attn = extra_attn.view(self.label_num, 1, self.label_num, 1).expand(-1, expand_size, -1,
                                                                                       expand_size)
             extra_attn = extra_attn.reshape(self.label_num * expand_size, -1)
-        elif self.graph_type=='GPA':
-            label_emb += self.id_embedding(self.label_id[:, None].expand(-1, expand_size)).view(1, -1,
-                                                                                                self.config.hidden_size)
-            extra_attn = self.distance_embedding(self.distance_mat) + self.edge_embedding(self.edge_mat).sum(
-                dim=1) / (
-                                  self.distance_mat.view(-1, 1) + 1e-8) # extra_attn is edge_emb
-            #rint(edge_emb.shape)
-            
-            extra_attn= extra_attn.reshape(1,-1,label_emb.size(1),label_emb.size(1))
-            #print(edge_emb.shape)
-
         elif self.graph_type== 'GCN' or self.graph_type == 'GAT':
             extra_attn = self.edge_list
         for hir_layer in self.hir_layers:
@@ -413,4 +324,3 @@ class GraphEncoder(nn.Module):
 
         
         return label_emb.squeeze(0)
-        
