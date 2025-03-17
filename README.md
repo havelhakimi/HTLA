@@ -1,5 +1,5 @@
 # HTLA<sup>n</sup>: Hierarchical Text-Label Association 
-Implementation for the 2023 IEEE Bigdata conference accepted paper "**Local Hierarchy-Aware Text-Label Association for Hierarchical Text Classification**" [paper-link](https://ieeexplore.ieee.org/abstract/document/10722840)
+Implementation for the 2024 IEEE 11th International Conference on Data Science and Advanced Analytics (DSAA) accepted paper "**Local Hierarchy-Aware Text-Label Association for Hierarchical Text Classification**" [paper-link](https://ieeexplore.ieee.org/abstract/document/10722840)
 ## Requirements
 - Python >= 3.6
 - torch >= 1.6.0
