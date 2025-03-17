@@ -12,16 +12,20 @@ import numpy as np
 parser = argparse.ArgumentParser()
 parser.add_argument('--device', type=str, default='cuda')
 parser.add_argument('--batch', type=int, default=32, help='Batch size.')
+parser.add_argument('--data', type=str, default='wos',  help='Dataset.')
 parser.add_argument('--name', type=str, required=True, help='Name of checkpoint. Commonly as DATASET-NAME.')
 parser.add_argument('--extra', default='_micro', choices=['_macro', '_micro'], help='An extra string in the name of checkpoint.')
 args = parser.parse_args()
 
 if __name__ == '__main__':
-    
-    data_path_root=os.path.join('../HTLA/data', args.data)
-    data_path=data_path_root+'Checkpoints/'
-    checkpoint = torch.load(os.path.join(data_path, args.name, 'checkpoint_best{}.pt'.format(args.extra)),
+       
+    ckp_path = os.path.join('../HTLA-n/data', args.data,'Checkpoints')
+    data_path = os.path.join('../HTLA-n/data', args.data)
+
+    checkpoint = torch.load(os.path.join(ckp_path, args.name, 'checkpoint_best{}.pt'.format(args.extra)),
                             map_location='cpu')       
+    batch_size = args.batch
+    
     batch_size = args.batch
     device = args.device
     extra = args.extra
