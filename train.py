@@ -1,5 +1,4 @@
 from transformers import AutoTokenizer, AutoConfig
-from fairseq.data import data_utils
 import torch
 from torch.utils.data import Dataset, DataLoader, Subset
 from optim import ScheduledOptim, Adam
@@ -12,7 +11,7 @@ from eval import evaluate
 from model import PLM_Graph
 import random
 import numpy as np
-
+import tarfile
 
 def seed_torch(seed=1029):
     random.seed(seed)
