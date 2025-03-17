@@ -1,5 +1,5 @@
 # HTLA<sup>n</sup>: Hierarchical Text-Label Association 
-
+Implementation for the 2023 IEEE Bigdata conference accepted paper "**Local Hierarchy-Aware Text-Label Association for Hierarchical Text Classification**" [paper-link](https://ieeexplore.ieee.org/abstract/document/10722840)
 ## Requirements
 - Python >= 3.6
 - torch >= 1.6.0
@@ -46,4 +46,18 @@ Some Important arguments
 - `--name` name of the directory which contains the saved checkpoint. The checkpoint is saved in `../HTLA/data/wos/` when working with WOS dataset
 - `--data` name of dataset directory which contains your data and related files
 - `--extra` two checkpoints are kept based on best macro-F1 and micro-F1 respectively. The possible choices are  `_macro` and `_micro` to choose from the two checkpoints
+
+
+## Citation
+If you find our work helpful, please cite it using the following BibTeX entry:
+```bibtex
+@INPROCEEDINGS{10722840,
+  author={Kumar, Ashish and Toshniwal, Durga},
+  booktitle={2024 IEEE 11th International Conference on Data Science and Advanced Analytics (DSAA)}, 
+  title={Local Hierarchy-Aware Text-Label Association for Hierarchical Text Classification}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-10},
+  doi={10.1109/DSAA61799.2024.10722840}}
 
