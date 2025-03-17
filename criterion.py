@@ -12,7 +12,7 @@ class MarginSeparationLoss(torch.nn.Module):
     def __init__(self, margin_list,data_path):
         super(MarginSeparationLoss, self).__init__()
 
-        self.level_label_indices = torch.load(os.path.join(data_path,'level.pt'))
+        self.level_label_indices = torch.load(os.path.join(data_path,'level_dict.pt'))
         self.ms_losses = []
 
         for margin in margin_list:
