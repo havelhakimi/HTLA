@@ -44,7 +44,7 @@ if __name__ == '__main__':
     label_dict = {i: tokenizer.decode(v, skip_special_tokens=True) for i, v in label_dict.items()}
     num_class = len(label_dict)
 
-    dataset = BertDataset(device=device, pad_idx=tokenizer.pad_token_id, data_path=data_path_root)
+    dataset = BertDataset(device=device, pad_idx=tokenizer.pad_token_id, data_path=data_path)
 
 
     model = PLM_Graph(config, num_labels=num_class,
@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
 
 
-    split = torch.load(os.path.join(data_path_root, 'split.pt'))
+    split = torch.load(os.path.join(data_path, 'split.pt'))
     test = Subset(dataset, split['test'])
     test = DataLoader(test, batch_size=batch_size, shuffle=False, collate_fn=dataset.collate_fn)
     model.load_state_dict(checkpoint['param'])
