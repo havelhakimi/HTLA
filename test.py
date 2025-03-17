@@ -31,7 +31,7 @@ if __name__ == '__main__':
     extra = args.extra
     mod_name=args.name
     args = checkpoint['args'] if checkpoint['args'] is not None else args
-    #data_path = os.path.join('data', args.data)
+
 
 
     if not hasattr(args, 'graph'):
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
     config = AutoConfig.from_pretrained(args.mod_type)
 
-    label_dict = torch.load(os.path.join(data_path_root, 'bert_value_dict.pt'))
+    label_dict = torch.load(os.path.join(data_path, 'bert_value_dict.pt'))
     label_dict = {i: tokenizer.decode(v, skip_special_tokens=True) for i, v in label_dict.items()}
     num_class = len(label_dict)
 
