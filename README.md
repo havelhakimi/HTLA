@@ -41,7 +41,6 @@ Some Important arguments: </br>
 
 ### For BERT (does flat multi-label classification) 
 `python train.py --name='ckp_bert' --batch 10 --data='wos' --graph 0` </br> </br>
-
 ## Test
 To run the trained model on test set run the script `test.py` </br> 
 `python test.py --name ckp_htla --data wos --extra _macro` </br> </br>
@@ -49,7 +48,6 @@ Some Important arguments
 - `--name` name of the directory which contains the saved checkpoint. The checkpoint is saved in `../HTLA/data/wos/` when working with WOS dataset
 - `--data` name of dataset directory which contains your data and related files
 - `--extra` two checkpoints are kept based on best macro-F1 and micro-F1 respectively. The possible choices are  `_macro` and `_micro` to choose from the two checkpoints
-
 ## Citation
 If you find our work helpful, please cite it using the following BibTeX entry:
 ```bibtex
