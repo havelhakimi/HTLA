@@ -3,15 +3,17 @@ Implementation for the 2024 IEEE 11th International Conference on Data Science a
 ## Requirements
 - Python >= 3.6
 - torch >= 1.6.0
-- transformers >= 4.2.1
-- fairseq == 0.10.0
-- torch-geometric == 2.4.0
-- torch-sparse == 0.6.17
-
+- transformers >= 4.30.2
+- Below libraries only if you want to run on GAT/GCN as the graph encoder
+  - torch-geometric == 2.4.0
+  - torch-sparse == 0.6.17
+  - torch-scatter == 2.1.1
 ## Data
-- The repository contains tokenized versions of the WOS dataset processed using the BERT tokenizer, along with its related files in the `data/wos` folder. This is obtained following the same way as in [contrastive-htc](https://github.com/wzh9969/contrastive-htc#preprocess).
-- All datasets are publicly available and accessible via the following links: [WOS](https://github.com/kk7nc/HDLTex), [RCV1-V2](https://trec.nist.gov/data/reuters/reuters.html) and [NYT](https://catalog.ldc.upenn.edu/LDC2008T19). 
-- We have followed the specific details outlined in the [contrastive-htc](https://github.com/wzh9969/contrastive-htc#preprocess) repository (which contains HGCLR model ) to obtain and preprocess the original datasets (WOS, RCV1-V2, and NYT). The corresponding scripts for preprocessing will be added here later on.
+- All datasets are publically available and can be accessed at [WOS](https://github.com/kk7nc/HDLTex), [RCV1-V2](https://trec.nist.gov/data/reuters/reuters.html) and [NYT](https://catalog.ldc.upenn.edu/LDC2008T19). 
+- We followed the specific details mentioned in the  [contrastive-htc](https://github.com/wzh9969/contrastive-htc#preprocess) repository to obtain and preprocess the original datasets (WOS, RCV1-V2, and NYT).
+- After accessing the dataset, run the scripts in the folder `preprocess` for each dataset separately to obtain tokenized version of dataset and the related files. These will be added in the `data/x` folder where x is the name of dataset with possible choices as: wos, rcv and nyt.
+- Detailed steps regarding how to obtain and preprocess each dataset are mentioned in the readme file of `preprocess` folder 
+- For reference we have added tokenized versions of the WOS and NYT dataset along with its related files in the `data` folder. The RCV1-V2 dataset exceeds 400 MB in size, which prevents us from uploading it to GitHub due to size constraints.
 
 ## Train
 The `train.py` can be used to train all the models by setting different arguments.  
