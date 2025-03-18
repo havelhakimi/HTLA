@@ -13,10 +13,24 @@ Implementation for the 2024 IEEE 11th International Conference on Data Science a
 - We followed the specific details mentioned in the  [contrastive-htc](https://github.com/wzh9969/contrastive-htc#preprocess) repository to obtain and preprocess the original datasets (WOS, RCV1-V2, and NYT).
 - After accessing the dataset, run the scripts in the folder `preprocess` for each dataset separately to obtain tokenized version of dataset and the related files. These will be added in the `data/x` folder where x is the name of dataset with possible choices as: wos, rcv and nyt.
 - Detailed steps regarding how to obtain and preprocess each dataset are mentioned in the readme file of `preprocess` folder 
-- For reference we have added tokenized versions of the WOS and NYT dataset along with its related files in the `data` folder. The RCV1-V2 dataset exceeds 400 MB in size, which prevents us from uploading it to GitHub due to size constraints.
+- For reference, we have added tokenized versions of the WOS and NYT datasets along with their related files in the `data` folder. The RCV1-V2 dataset exceeds 400 MB in size, so it couldn't be uploaded due to GitHub's file size limits.
 
 ## Train
 The `train.py` can be used to train all the models by setting different arguments.  
+
+###  For HTLA (does Hierarchical Text Classification with Margin Separation Loss (MSL))
+`python train.py --name='ckp_htla' --batch 10 --data='wos' --graph 1 --graph_type='graphormer'  --msl 1 --msl_pen 1 --mg_list 0.1 0.1` </br>
+</br>
+Some Important arguments: </br>
+- `--name` name of directory in which your model will be saved. For e.g. the above model will be saved in `./HTLA/data/wos/ckp_bert`
+- `--data` name of dataset directory which contains your data and related files
+- `--graph` whether to use graph encoder
+- `--graph_type` type of graph encoder. Possible choices are 'graphormer', 'GCN', and 'GAT'. **HTLA uses graphormer as the graph encoder.** The code for graph encoder is in the script `graph.py` 
+- `--msl` whether Margin Separation Loss required or not
+- `--msl_pen` weight for the MSL component (**we set it to 1 for all datasets**)
+- `--mg_list` margin distance for each level.  (**We use 0.1 as margin distance for each level in all datasets**)
+- The node feature is fixed as 768 to match the text feature size and is not included as run time argument
+
 
 ### For BERT (does flat multi-label classification) 
 `python train.py --name='ckp_bert' --batch 10 --data='wos' --graph 0` </br> </br>
@@ -24,15 +38,6 @@ Some Important arguments: </br>
 - `--name` name of directory in which your model will be saved. For e.g. the above model will be saved in `./HTLA/data/wos/ckp_bert`
 - `--data` name of dataset directory which contains your data and related files
 - `--graph` whether to use graph encoder
-###  For HTLA (does Hierarchical Text Classification with Margin Separation Loss (MSL))
-`python train.py --name='ckp_htla' --batch 10 --data='wos' --graph 1 --graph_type='graphormer'  --msl 1 --msl_pen 1 --mg_list 0.1 0.1` </br>
-</br>
-Some Important arguments: </br>
-- `--graph_type` type of graph encoder. Possible choices are 'graphormer', 'GCN', and 'GAT'. HTLA uses graphormer as the graph encoder. The code for graph encoder is in the script graph.py 
-- `--msl` whether Margin Separation Loss required or not
-- `--msl_pen` weight for the MSL component (we set it to 1 for all datasets)
-- `--mg_list` margin distance for each level (We use 0.1 as margin distance for each level in all datasets)
-- The node feature is fixed as 768 to match the text feature size and is not included as run time argument
 
 ###  For BERT-Graphormer (does Hierarchical Text Classification without MSL)
 `python train.py --name='ckp_bgrapho' --batch 10 --data='wos' --graph 1 --graph_type='graphormer' --msl 0`  </br>
