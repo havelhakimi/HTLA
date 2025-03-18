@@ -28,7 +28,7 @@ Some Important arguments: </br>
 - `--data` name of dataset directory which contains your data and related files. Possible options are 'wos', 'rcv' and 'nyt'
 - `--graph` whether to use graph encoder
 - `--graph_type` type of graph encoder. Possible choices are 'graphormer', 'GCN', and 'GAT'. **HTLA uses graphormer as the graph encoder.** The code for graph encoder is in the script `graph.py` 
-- `--msl` whether Margin Separation Loss required or not. The code fpr MSL is in `criterion.py`.
+- `--msl` whether Margin Separation Loss required or not. The code for MSL is in `criterion.py`.
 - `--msl_pen` weight for the MSL component (**we set it to 1 for all datasets**)
 - `--mg_list` margin distance for each level.  (**We use 0.1 as margin distance for each level in all datasets**).
     -  For rcv: `--mg_list 0.1 0.1 0.1`
