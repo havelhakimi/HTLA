@@ -31,9 +31,9 @@ Some Important arguments: </br>
 - `--msl` whether Margin Separation Loss required or not. The code fpr MSL is in `criterion.py`.
 - `--msl_pen` weight for the MSL component (**we set it to 1 for all datasets**)
 - `--mg_list` margin distance for each level.  (**We use 0.1 as margin distance for each level in all datasets**).
-    -  For rcv: `mg_list 0.1 0.1 0.1`
-    -  For nyt: `mg_list 0.1 0.1 0.1 0.1 0.1 0.1`
-      - **Note**: For RCV and NYT, the last level contains only 1 and 2 labels, respectively, so MSL is not applied there. 
+    -  For rcv: `--mg_list 0.1 0.1 0.1`
+    -  For nyt: `--mg_list 0.1 0.1 0.1 0.1 0.1 0.1`
+        - **Note**: For RCV and NYT, the last level contains only 1 and 2 labels, respectively, so MSL is not applied there. 
 - The node feature is fixed as 768 to match the text feature size and is not included as run time argument
   
 ###  For BERT-Graphormer (does Hierarchical Text Classification without MSL)
